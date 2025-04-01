@@ -1,48 +1,47 @@
-name: line test and build
+name: Lint, Test, and Build
 on: push
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: clone repo into runner
+      - name: Clone repo into runner
         uses: actions/checkout@v3
-      - name: install node jobs
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: install dependencise
+      - name: Install dependencies
         run: npm ci
-      - name: run lint
+      - name: Run lint
         run: npm run lint
+
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: clone repo into runner
+      - name: Clone repo into runner
         uses: actions/checkout@v3
-      - name: install node jobs
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-           node-version: 18
-      - name: install dependencise
+          node-version: 18
+      - name: Install dependencies
         run: npm ci
-      - name: run test
+      - name: Run test
         run: npm test
+
   deploy:
-    needs: test
+    needs: [lint, test]  # ✅ Now depends on both lint and test
     runs-on: ubuntu-latest
     steps:
-      - name: clone repo into runner
+      - name: Clone repo into runner
         uses: actions/checkout@v3
-      - name: install node jobs
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-           node-version: 18
-      - name: install dependencise
+          node-version: 18
+      - name: Install dependencies
         run: npm ci
-      - name: build the code
+      - name: Build the code
         run: npm run build
-      - name: deploy the website
-        run: echo "we are finalling deploying the site "
-
-
-      
+      - name: Deploy the website
+        run: echo "We are finally deploying the site"
